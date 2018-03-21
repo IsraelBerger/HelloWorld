@@ -1,0 +1,261 @@
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data;
+
+namespace GTIN8
+{
+
+    class GetBarCode
+    {
+
+
+        public int result;
+         public int BC8Digit;
+        public string BarCodeAsString;
+        public string BarCodeString
+        {
+            get { return BarCodeAsString; }
+            set {  BarCodeAsString= value; }
+        }
+            
+
+
+        public void GetGTIN()
+        {
+            Console.WriteLine("enter digits");
+            this.BarCodeAsString = Console.ReadLine();
+            while (BarCodeAsString.Length < 7 || BarCodeAsString.Length > 7)
+            {
+                Console.WriteLine(" please only enter 7 Digits");
+                BarCodeAsString = Console.ReadLine();
+            }
+            int[] BarCodeInt = new int[7];
+            ConvertToInt
+            :
+            try
+            {
+                for (int i = 0; i < 7; i++)
+                {
+                    char BarCodeChar = BarCodeAsString[i];
+                    BarCodeInt[i] = int.Parse(BarCodeChar.ToString());
+                }
+               
+                Console.WriteLine();
+                Console.WriteLine(BarCodeInt.Length + "BarCodeInt.Length");
+            }
+            catch (Exception se)
+            {
+                Console.WriteLine(se.Message);
+                Console.WriteLine("enter digits only");
+                BarCodeAsString = Console.ReadLine();
+                goto ConvertToInt;
+            }
+
+
+            result = BarCodeInt[0] * 3;
+            result += BarCodeInt[1] * 1;
+            result += BarCodeInt[2] * 3;
+            result += BarCodeInt[3] * 1;
+            result += BarCodeInt[4] * 3;
+            result += BarCodeInt[5] * 1;
+            result += BarCodeInt[6] * 3;
+            Console.WriteLine(result + " result");
+            // return result;
+        }
+ public int BarCodeLastDigit()
+        {
+            int b = result / 10;
+            int c = (b * 10) + 10;
+            int d = c - result;
+            if (d % 10 == 0)
+            {
+                d = 0;
+            }
+             BC8Digit = d;
+            return d;
+        }
+        public string FinalBarCode()
+        {
+            string A = this.BarCodeAsString;
+            string b = BarCodeLastDigit().ToString();
+            string FinalBCstring = A + b;
+            Console.WriteLine("Final BarCode "+FinalBCstring);
+            return FinalBCstring;//(BarCodeINPut * 10) + BarCodeLastDigit();
+        }
+        public GetBarCode()
+        {
+            GetGTIN();
+                FinalBarCode();
+         
+            QuickCheck();
+        }
+        public bool QuickCheck()
+        {
+            
+       int Total= this.BC8Digit + this.result;
+            if (Total % 10 == 0 || Total % 2 == 0 || Total % 5 == 0)
+            {
+                Console.WriteLine(Total + "its a bar code");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine(Total + "its not bar code");
+                return false;
+            }
+        }
+    }
+
+        class CheckBarCode
+        {
+            public bool IsItABarCode()
+            {
+                Console.WriteLine("enter digits");
+            string BoolBarCodeAsString = Console.ReadLine();
+            while (BoolBarCodeAsString.Length <7||BoolBarCodeAsString.Length<7)
+            {
+                Console.WriteLine(" please only enter 7 Digits");
+                BoolBarCodeAsString = Console.ReadLine();
+            }
+                int[] BoolBarCodeInt = new int[8];
+                H:
+                try
+                {
+                    for (int i = 0; i < 8; i++)
+                    {
+                        char BarCodeChar = BoolBarCodeAsString[i];
+                        BoolBarCodeInt[i] = int.Parse(BarCodeChar.ToString());
+                    }
+                    for (int i = 0; i < 8; i++)
+                    {
+                        Console.Write(BoolBarCodeInt[i]);
+                    }
+                    Console.WriteLine();
+                    Console.WriteLine(BoolBarCodeInt.Length + " BoolBarCodeInt.Length");
+                }
+                catch (Exception se)
+                {
+                    Console.WriteLine(se.Message);
+                    Console.WriteLine("enter 8 digits");
+                    BoolBarCodeAsString = Console.ReadLine();
+                    goto H;
+                }
+
+                //  int BoolResult;
+                int Boolresult = BoolBarCodeInt[0] * 3;
+                Boolresult += BoolBarCodeInt[1] * 1;
+                Boolresult += BoolBarCodeInt[2] * 3;
+                Boolresult += BoolBarCodeInt[3] * 1;
+                Boolresult += BoolBarCodeInt[4] * 3;
+                Boolresult += BoolBarCodeInt[5] * 1;
+                Boolresult += BoolBarCodeInt[6] * 3;
+                Console.WriteLine(Boolresult + "result");
+                int BoolLastDigit = BoolBarCodeInt[7];
+
+                int c = Boolresult + BoolLastDigit;
+
+
+                if (c % 10 == 0)
+                {
+                    Console.WriteLine(c + "its a bar code");
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine(c + "its not bar code");
+                    return false;
+                }
+            }
+        public CheckBarCode()
+        {
+            IsItABarCode();
+        }
+        }
+       
+       
+        
+        class Example
+        {
+            public static bool NeedACode(ref string yes)
+            {
+                yes = yes.ToLower();
+                for (;;)
+                {
+                    if (yes == "yes")
+                    {
+                        return true;
+                    }
+                    if (yes == "no")
+                    {
+                        Console.WriteLine("have a nice day");
+                        return false;
+                    }
+                    else if ((yes != "yes") || (yes != "no"))
+                    {
+                        Console.WriteLine("please enter yes or no");
+                        yes = Console.ReadLine();
+                        yes = yes.ToLower();
+                    }
+                }
+            }
+
+            static void Main(string[] args)
+            {
+   
+          
+            List<GetBarCode> ListOfBarCode = new List<GetBarCode>();
+                string GetBarCode;
+                Console.WriteLine("would you like to get a barcode");
+                GetBarCode = Console.ReadLine();
+                while (NeedACode(ref GetBarCode))
+                {
+                    ListOfBarCode.Add(new GetBarCode());
+                
+                    Console.WriteLine("would you like to get another barcode ");
+                    GetBarCode = Console.ReadLine();
+                }
+                for (int i = 0; i < ListOfBarCode.Count; i++)
+                {
+                    Console.WriteLine(ListOfBarCode[i].ToString() + i);
+                    Console.WriteLine(ListOfBarCode[i] + " BCTostring " + i);
+                }
+                Console.WriteLine("please check if a barcode exsits");
+                string x = Console.ReadLine();
+            bool Exists = false;
+                for (int i = 0; i < ListOfBarCode.Count; i++)
+                {
+                    if (x == ListOfBarCode[i].BarCodeAsString)
+                    {
+                        Console.WriteLine("it exits");
+                   Exists= true;
+                       
+                    }
+                    else
+                    {
+                        Console.WriteLine("not to be found");
+                   Exists= false;
+                    }
+                }
+            Console.WriteLine("this BarCode exists bool = to "+Exists);
+                Console.WriteLine("Would you like to check if a GTIN8 BarCode is true?");
+            string CheckCode = Console.ReadLine();
+            List<CheckBarCode> ListOf8 = new List<CheckBarCode>();
+                while (NeedACode(ref CheckCode))
+                {
+                    ListOf8.Add(new CheckBarCode());
+                    Console.WriteLine("want to check again?");
+                    CheckCode = Console.ReadLine();
+                }
+                Console.ReadKey();
+            }
+        }
+    }   
+       
+   
+
+  
